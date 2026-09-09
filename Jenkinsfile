@@ -22,7 +22,7 @@ pipeline {
             steps {
                 echo 'Comprobando que la web está viva...'
                 sleep 3
-                sh 'curl -f http://localhost:8090 || exit 1'
+                sh 'IP=$(docker inspect -f "{{.NetworkSettings.IPAddress}}" servidor-web) && curl -f http://$IP:80 || exit 1'
             }
         }
         stage('Limpiar Residuos') {
