@@ -18,5 +18,18 @@ pipeline {
                 sh 'docker run -d -p 8090:80 --name servidor-web mi-web-frankenstein:v1'
             }
         }
+        stage('Verificación (Smoke Test)') {
+            steps {
+                echo 'Comprobando que la web está viva...'
+                sleep 3
+                sh 'curl -f http://localhost:8090 || exit 1'
+            }
+        }
+        stage('Limpiar Residuos') {
+            steps {
+                echo 'Eliminando imágenes huérfanas...'
+                sh 'docker image prune -f'
+            }
+        }
     }
 }
